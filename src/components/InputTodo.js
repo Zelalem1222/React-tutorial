@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 import React from 'react';
 
 class InputTodo extends React.Component {
@@ -25,16 +26,12 @@ onChange = (e) => {
 }
 
 render() {
-  const [title] = this.state;
   return (
     <form className="form-container" onSubmit={this.handleSubmit}>
-      <input
-        className="input-text"
-        type="text"
-        placeholder="Add Todo..."
-        name="title"
-        value={title}
-        onChange={this.onChange}
+      <input className="input-text" 
+      type="text" placeholder="Add Todo..." 
+      name="title" value={this.state.title}
+      onChange={this.onChange} 
       />
       <button className="input-submit" type="submit">Submit</button>
     </form>
