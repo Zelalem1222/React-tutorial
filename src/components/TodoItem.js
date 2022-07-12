@@ -1,13 +1,71 @@
-import React from "react";
+/* eslint-disable */
+ import React from 'react';
+import styles from './TodoItem.module.css';
 
 class TodoItem extends React.Component {
-    render(){
-        return <li> 
-     <input type='checkbox' checked={this.props.todo.completed} onChange={()=>{this.props.handleChangeProps(this.props.todo.id)}}/> 
-        <button onClick={()=> {this.props.delTodoProps(this.props.todo.id)}}>delete</button>
-        {this.props.todo.title}
-        </li>
+ state = {
+   editing: false,
+ }
+
+  handleEditing = () => {
+    this.setState({
+      editing: true,
+    });
+  }
+
+  handleEditDone = (e) => {
+    if (e.key === 'Enter') {
+      this.setState({
+        editing: false,
+      });
     }
+  }
+
+  componentWillUnmount() {
+    console.log('Cleaning up...');
+  }
+
+  render() {
+    const viewMode = {};
+    const editMode = {};
+
+    if (this.state.editing) {
+      viewMode.display = 'none';
+    } else {
+      editMode.display = 'none';
+    }
+
+    const completedStyle = {
+      fontStyle: 'italic',
+      color: '#595959',
+      opacity: 0.4,
+      textDecoration: 'line-through',
+    };
+
+    const { completed, id, title } = this.props.todo;
+    return (
+      <li className={styles.item}>
+        <div onDoubleClick={this.handleEditing} style={viewMode}>
+          <input
+            type="checkbox"
+            className={styles.checkbox}
+            checked={completed}
+            onChange={() => this.props.handleChangeProps(id)}
+          />
+          <button onClick={() => this.props.delTodoProps(id)}>Delete</button>
+          <span style={completed ? completedStyle : null}>{title}</span>
+        </div>
+        <input
+          type="text"
+          className={styles.textInput}
+          style={editMode}
+          value={title}
+          onChange={(e) => { this.props.setUpdateProps(e.target.value, id); }}
+          onKeyDown={this.handleEditDone}
+        />
+      </li>
+    );
+  }
 }
 
-export default TodoItem
+export default TodoItem;
